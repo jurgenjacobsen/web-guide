@@ -7,7 +7,7 @@ on:
 jobs:
   label_issue:
     # Only run if the issue was created using the 'Blog Post' template
-    if: contains(github.event.issue.title, '[post]')
+    if: contains(github.event.issue.title, '[POST]')
     runs-on: ubuntu-latest
     permissions:
       issues: write

@@ -1,6 +1,6 @@
 name: Blog Post
 description: Create a new blog post issue
-title: '[post] '
+title: '[POST] '
 body:
   - type: dropdown
     id: category
