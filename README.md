@@ -35,10 +35,12 @@ npm run build
 ```
 ## Deploy To GitHub Pages
 
-```bash
-npm run deploy
-```
-This publishes the `dist` folder to the `gh-pages` branch.
+Deployment is handled by GitHub Actions using [.github/workflows/deploy.yml](.github/workflows/deploy.yml).
+
+To deploy:
+
+1. Push changes to `main`.
+2. The workflow builds the site and publishes the `docs` artifact to GitHub Pages.
 
 ## Authoring Posts
 
