@@ -1,0 +1,40 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_GITHUB_OWNER: ${{ vars.VITE_GITHUB_OWNER || 'jurgenjacobsen' }}
+          VITE_GITHUB_REPO: ${{ vars.VITE_GITHUB_REPO || 'web-guide' }}
+          VITE_GITHUB_LABEL: ${{ vars.VITE_GITHUB_LABEL || 'bug' }}
+          VITE_BLOG_TITLE: ${{ vars.VITE_BLOG_TITLE || 'Web Guide' }}
+          VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || '/' }}
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
