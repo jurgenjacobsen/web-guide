@@ -1,6 +1,11 @@
-# IssuePress
+![Banner](https://github.com/jurgenjacobsen/web-guide/blob/main/public/banner.png?raw=true)
 
-A React + TypeScript + TailwindCSS blog that uses GitHub Issues as the CMS.
+# Web Guide
+A curation engine for tech resources.
+
+[![Deploy Website](https://github.com/jurgenjacobsen/web-guide/actions/workflows/deploy.yml/badge.svg)](https://github.com/jurgenjacobsen/web-guide/actions/workflows/deploy.yml)
+---
+
 ## How It Works
 
 - The home page fetches issues from a configured repository and displays them as posts.
