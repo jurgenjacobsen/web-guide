@@ -25,6 +25,7 @@ const owner = import.meta.env.VITE_GITHUB_OWNER as string | undefined
 const repo = import.meta.env.VITE_GITHUB_REPO as string | undefined
 const issueLabel = import.meta.env.VITE_GITHUB_LABEL as string | undefined
 const blogTitle = import.meta.env.VITE_BLOG_TITLE || 'IssuePress'
+const normalizedIssueLabel = issueLabel?.trim()
 const categories = [
   'design',
   'photography',
@@ -99,8 +100,8 @@ function App() {
           direction: 'desc',
         })
 
-        if (issueLabel) {
-          params.set('labels', issueLabel)
+        if (normalizedIssueLabel) {
+          params.set('labels', normalizedIssueLabel)
         }
 
         const response = await fetch(
@@ -111,7 +112,6 @@ function App() {
         if (!response.ok) {
           throw new Error(`GitHub API error: ${response.status}`)
         }
-
         const data = (await response.json()) as GitHubIssue[]
         const filteredPosts = data.filter(
           (item) =>
@@ -119,6 +119,7 @@ function App() {
             WHITELISTED_AUTHOR_SET.has(item.user.login.toLowerCase()),
         )
         setIssues(filteredPosts)
+
       } catch (error) {
         if ((error as Error).name === 'AbortError') {
           return
@@ -223,7 +224,7 @@ function App() {
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.2em]">
-                GitHub Issues Blog
+                Useful Websites & Resources
               </p>
               <h1 className="mt-1 font-display text-3xl leading-tight sm:text-4xl">
                 {blogTitle}
@@ -345,7 +346,7 @@ function App() {
                         >
                           <div className="flex items-start justify-between gap-4">
                             <h2 className="font-display text-xl leading-tight sm:text-2xl">
-                              {issue.title}
+                              {issue.title.replace(/\[post\]/g, '').trim() || 'Untitled Post'}
                             </h2>
                             <span className="rounded-sm border-2 border-black px-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em]">
                               #{issue.number}
