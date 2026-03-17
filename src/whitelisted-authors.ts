@@ -1,5 +1,5 @@
 export const WHITELISTED_AUTHORS = [
-  'jurgen',
+  'jurgenjacobsen',
 ]
 
 export const WHITELISTED_AUTHOR_SET = new Set(
