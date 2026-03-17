@@ -1,5 +1,4 @@
 name: Blog Post
-about: Create a new blog post issue
 title: '[post] '
 labels:
   - design
