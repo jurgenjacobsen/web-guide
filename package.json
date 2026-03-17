@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build --outDir docs",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist -b gh-pages",
+    "deploy": "gh-pages -d docs -b gh-pages",
     "lint": "eslint .",
     "preview": "vite preview"
   },
