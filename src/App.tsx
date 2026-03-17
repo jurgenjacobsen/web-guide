@@ -152,11 +152,15 @@ function App() {
           throw new Error(`GitHub API error: ${response.status}`)
         }
         const data = (await response.json()) as GitHubIssue[]
-        const filteredPosts = data.filter(
-          (item) =>
+        const filteredPosts = data
+        .filter((item) =>
             !item.pull_request &&
             WHITELISTED_AUTHOR_SET.has(item.user.login.toLowerCase()),
         )
+        .filter((item) =>
+            item.title.toUpperCase().startsWith('[POST]')
+        )
+
 
         const parsedPosts = filteredPosts.map((issue) => {
             const { category, summary, postContent } = parseIssueBody(issue.body);
