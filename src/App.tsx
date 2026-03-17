@@ -4,22 +4,27 @@ import { marked } from 'marked'
 import { WHITELISTED_AUTHOR_SET } from './whitelisted-authors'
 
 type GitHubIssue = {
-  id: number
-  number: number
-  title: string
-  body: string | null
-  html_url: string
-  created_at: string
-  labels: { name: string }[]
-  user: {
-    login: string
-  }
-  pull_request?: unknown
+    id: number
+    number: number
+    title: string
+    body: string | null
+    html_url: string
+    created_at: string
+    labels: { name: string }[]
+    user: {
+        login: string
+    }
+    pull_request?: unknown,
+    extracted?: {
+        category: string,
+        summary: string,
+        body: string
+     }
 }
 
 type RouteState =
-  | { kind: 'home' }
-  | { kind: 'post'; issueNumber: number }
+    | { kind: 'home' }
+    | { kind: 'post'; issueNumber: number }
 
 const owner = import.meta.env.VITE_GITHUB_OWNER as string | undefined
 const repo = import.meta.env.VITE_GITHUB_REPO as string | undefined
@@ -27,39 +32,73 @@ const issueLabel = import.meta.env.VITE_GITHUB_LABEL as string | undefined
 const blogTitle = import.meta.env.VITE_BLOG_TITLE || 'IssuePress'
 const normalizedIssueLabel = issueLabel?.trim()
 const categories = [
-  'design',
-  'photography',
-  'study',
-  'stores',
-  'work',
-  'crafts',
-  'programming',
+    {
+        name: 'design',
+        color: '#0E8A16'
+    },
+    {
+        name: 'photography',
+        color: '#1D76DB'
+    },
+    {
+        name: 'study',
+        color: '#FBCA04'
+    },
+    {
+        name: 'stores',
+        color: '#5319E7'
+    },
+    {
+        name: 'work',
+        color: '#F07361'
+    },
+    {
+        name: 'crafts',
+        color: '#C5DEF5'
+    },
+    {
+        name: 'programming',
+        color: '#0052CC'
+    }
 ] as const
 
 const isConfigured = Boolean(owner && repo)
 
 function parseHashRoute(hash: string): RouteState {
-  const match = hash.match(/^#\/post\/(\d+)$/)
-  if (!match) {
-    return { kind: 'home' }
-  }
+    const match = hash.match(/^#\/post\/(\d+)$/)
+    if (!match) {
+        return { kind: 'home' }
+    }
 
-  return { kind: 'post', issueNumber: Number(match[1]) }
+    return { kind: 'post', issueNumber: Number(match[1]) }
 }
 
 function goToPost(issueNumber: number): void {
-  window.location.hash = `/post/${issueNumber}`
+    window.location.hash = `/post/${issueNumber}`
 }
 
 function goHome(): void {
-  window.location.hash = '/'
+    window.location.hash = '/'
 }
 
 function formatDate(dateString: string): string {
-  return new Intl.DateTimeFormat('en', {
-    dateStyle: 'medium',
-  }).format(new Date(dateString))
+    return new Intl.DateTimeFormat('en', {
+        dateStyle: 'medium',
+    }).format(new Date(dateString))
 }
+
+function parseIssueBody(body: string | null = '') {
+    // Regex: Look for the header, then capture everything until the next header or end of string
+    const categoryMatch = body?.match(/### Category\s*\n+([\s\S]*?)(?=\n+###|$)/i);
+    const summaryMatch = body?.match(/### Summary\s*\n+([\s\S]*?)(?=\n+###|$)/i);
+    const postBodyMatch = body?.match(/### Post body \(Markdown\)\s*\n+([\s\S]*?)$/i);
+
+    return {
+        category: categoryMatch?.[1]?.trim() || 'Uncategorized',
+        summary: summaryMatch?.[1]?.trim() || '',
+        postContent: postBodyMatch?.[1]?.trim() || ''
+    };
+};
 
 function App() {
   const [route, setRoute] = useState<RouteState>(() =>
@@ -118,7 +157,21 @@ function App() {
             !item.pull_request &&
             WHITELISTED_AUTHOR_SET.has(item.user.login.toLowerCase()),
         )
-        setIssues(filteredPosts)
+
+        const parsedPosts = filteredPosts.map((issue) => {
+            const { category, summary, postContent } = parseIssueBody(issue.body);
+
+            return {
+                ...issue,
+                extracted: {
+                category,
+                summary,
+                body: postContent // Mapping 'Post body' to your requested 'body' prop
+                }
+            };
+        });
+
+        setIssues(parsedPosts)
 
       } catch (error) {
         if ((error as Error).name === 'AbortError') {
@@ -219,7 +272,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-paper text-black">
-      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-8">
         <header className="rounded-sm border-2 border-black bg-white p-4 sm:p-6">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
@@ -299,18 +352,24 @@ function App() {
                       All
                     </button>
                     {categories.map((category) => (
-                      <button
-                        key={category}
-                        onClick={() => setSelectedCategory(category)}
-                        className={`rounded-sm border-2 px-3 py-2 text-left font-mono text-[11px] uppercase tracking-wider transition ${
-                          selectedCategory === category
-                            ? 'border-black bg-black text-white'
-                            : 'border-black bg-white hover:-translate-y-0.5'
-                        }`}
-                      >
-                        {category}
-                      </button>
-                    ))}
+                        <button
+                            key={category.name}
+                            onClick={() => setSelectedCategory(category.name)}
+                            className={`flex items-center gap-2 rounded-sm border-2 px-3 py-2 text-left font-mono text-[11px] uppercase tracking-wider transition ${
+                            selectedCategory === category.name
+                                ? 'border-black bg-black text-white'
+                                : 'border-black bg-white hover:-translate-y-0.5'
+                            }`}
+                        >
+                            {/* The Dot */}
+                            <span
+                            className={`h-1.5 w-1.5 rounded-full`}
+                            style={{ backgroundColor: category.color }}
+                            />
+
+                            {category.name}
+                        </button>
+                        ))}
                   </div>
                 </aside>
 
@@ -337,7 +396,7 @@ function App() {
                       No posts match the selected category or search query.
                     </div>
                   ) : (
-                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-2">
                       {visibleIssues.map((issue) => (
                         <article
                           key={issue.id}
@@ -345,7 +404,7 @@ function App() {
                           onClick={() => goToPost(issue.number)}
                         >
                           <div className="flex items-start justify-between gap-4">
-                            <h2 className="font-display text-xl leading-tight sm:text-2xl">
+                            <h2 className="font-display text-xl leading-tight sm:text-2xl font-medium">
                               {issue.title.replace(/\[post\]/g, '').trim() || 'Untitled Post'}
                             </h2>
                             <span className="rounded-sm border-2 border-black px-2 py-1 font-mono text-[10px] uppercase tracking-[0.16em]">
@@ -354,7 +413,7 @@ function App() {
                           </div>
 
                           <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-neutral-700">
-                            {(issue.body || 'No content yet.').replace(/\n+/g, ' ')}
+                            {(issue.extracted?.summary|| issue.body || 'No content yet.').replace(/\n+/g, ' ')}
                           </p>
 
                           <div className="mt-4 flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-wider text-neutral-700">
@@ -365,12 +424,18 @@ function App() {
                               @{issue.user.login}
                             </span>
                             {issue.labels.slice(0, 3).map((label) => (
-                              <span
-                                key={label.name}
-                                className="rounded-sm border border-black px-2 py-1 font-mono"
-                              >
-                                {label.name}
-                              </span>
+                                <span
+                                    key={label.name}
+                                    className="inline-flex items-center gap-1.5 rounded-sm border border-black px-2 py-1 font-mono text-[10px] uppercase"
+                                >
+                                    {/* The Dot: Colored based on the GitHub label color */}
+                                    <span
+                                        className="h-1.5 w-1.5 rounded-full"
+                                        style={{ backgroundColor: `${categories.find((c) => c.name === label.name.toLowerCase())?.color || 'ccc'}` }}
+                                    />
+
+                                    {label.name}
+                                </span>
                             ))}
                           </div>
                         </article>
