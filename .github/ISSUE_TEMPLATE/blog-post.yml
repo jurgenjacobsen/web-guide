@@ -1,0 +1,42 @@
+name: Blog Post
+about: Create a new blog post issue
+title: '[post] '
+labels:
+  - design
+  - study
+body:
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Select the primary category for this post.
+      options:
+        - design
+        - photography
+        - study
+        - stores
+        - work
+        - crafts
+        - programming
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: A short summary shown in previews.
+      placeholder: What should readers learn from this post?
+    validations:
+      required: true
+
+  - type: textarea
+    id: content
+    attributes:
+      label: Post body (Markdown)
+      description: Write the full article in Markdown.
+      placeholder: |
+        ## Intro
+        Write your post here...
+    validations:
+      required: true

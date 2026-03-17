@@ -49,4 +49,11 @@ Create a GitHub issue in your configured repo:
 - Body = markdown content
 - Optional labels = tags or filtering label (`blog` by default)
 
+Recommended setup in this project:
+
+- Use the issue template at `.github/ISSUE_TEMPLATE/blog-post.yml`.
+- Keep your category labels in `.github/labels.yml` (`design`, `photography`, `study`, `stores`, `work`, `crafts`, `programming`).
+- Only usernames listed in `src/whitelisted-authors.ts` can publish visible posts.
+- The home page supports category filtering (left sidebar) and search by post title/body.
+
 After creating the issue, the post appears automatically in the blog.

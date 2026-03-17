@@ -1,0 +1,27 @@
+- name: design
+  color: 0E8A16
+  description: Design-focused posts and resources.
+
+- name: photography
+  color: 1D76DB
+  description: Photography techniques, gear, and storytelling.
+
+- name: study
+  color: FBCA04
+  description: Learning notes, tutorials, and study logs.
+
+- name: stores
+  color: 5319E7
+  description: Store showcases, reviews, and commerce ideas.
+
+- name: work
+  color: D93F0B
+  description: Workflows, productivity, and professional practice.
+
+- name: crafts
+  color: C5DEF5
+  description: Handmade crafts and creative process content.
+
+- name: programming
+  color: 0052CC
+  description: Software development, tooling, and code notes.
