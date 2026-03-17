@@ -1,0 +1,7 @@
+# General rules for all search engines
+User-agent: *
+Allow: /
+
+# Disallow specific technical or private folders (if applicable)
+Disallow: /node_modules/
+Disallow: /dist/
