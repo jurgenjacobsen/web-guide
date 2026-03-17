@@ -1,33 +1,61 @@
----
 name: 🐛 Bug Report
-about: Create a report to help us improve
+description: Create a report to help us improve
 title: '[BUG] - Short, descriptive summary'
 labels: bug
 assignees: 'jurgenjacobsen'
 
----
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: '📝 Description'
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
 
-body: |-
-    ## 📝 Description
-    A clear and concise description of what the bug is.
+  - type: textarea
+    id: summary
+    attributes:
+      label: '🚶 Steps to Reproduce'
+      description:
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: false
 
-    ## 🚶 Steps to Reproduce
-    1. Go to '...'
-    2. Click on '....'
-    3. Scroll down to '....'
-    4. See error
+  - type: textarea
+    id: summary
+    attributes:
+      label: '🎯 Expected Behavior'
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: false
 
-    ## 🎯 Expected Behavior
-    A clear and concise description of what you expected to happen.
+  - type: textarea
+    id: summary
+    attributes:
+      label: '📸 Screenshots / Recordings'
+      description: If applicable, add screenshots or a screen recording to help explain your problem.
+    validations:
+      required: false
 
-    ## 📸 Screenshots / Recordings
-    If applicable, add screenshots or a screen recording to help explain your problem.
+  - type: textarea
+    id: summary
+    attributes:
+      label: '💻 Environment Information'
+      description: ->
+        * **OS:** [e.g. iOS, Windows 11]
+        * **Browser:** [e.g. Chrome, Safari]
+        * **Version:** [e.g. 22]
+    validations:
+      required: false
 
-    ## 💻 Environment Information
-    * **OS:** [e.g. iOS, Windows 11]
-    * **Browser:** [e.g. Chrome, Safari]
-    * **Version:** [e.g. 22]
-
-    ## 🔍 Additional Context
-    Add any other context about the problem here (e.g., logs, stack traces, or "this only happens on Tuesdays").
-
+  - type: textarea
+    id: summary
+    attributes:
+      label: '🔍 Additional Context'
+      description: Add any other context about the problem here (e.g., logs, stack traces, or "this only happens on Tuesdays").
+    validations:
+      required: false
