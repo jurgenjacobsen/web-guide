@@ -1,0 +1,34 @@
+[
+  {
+    "slug": "domains",
+    "filename": "DOMAINS.md",
+    "title": "Domains",
+    "description": "A list of tools and resources for domain management.",
+    "author": "jurgenjacobsen",
+    "category": "development"
+  },
+  {
+    "slug": "versioning",
+    "filename": "VERSIONING.md",
+    "title": "Versioning",
+    "description": "A small guide on how to make the versioning of apps and projects.",
+    "author": "jurgenjacobsen",
+    "category": "development"
+  },
+  {
+    "slug": "vibe_coding",
+    "filename": "VIBE_CODING.md",
+    "title": "Vibe Coding",
+    "description": "A list of tools and resources for vibe coding.",
+    "author": "jurgenjacobsen",
+    "category": "development"
+  },
+  {
+    "slug": "web_design",
+    "filename": "WEB_DESIGN.md",
+    "title": "Web Design",
+    "description": "A collection of useful resources for web development and design.",
+    "author": "jurgenjacobsen",
+    "category": "development"
+  }
+]

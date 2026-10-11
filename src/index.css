@@ -48,12 +48,16 @@
     @apply underline decoration-2 underline-offset-4;
   }
 
+  .markdown-body a:hover {
+    @apply underline decoration-2 underline-offset-4 decoration-black/50 text-black/75;
+  }
+
   .markdown-body pre {
     @apply overflow-x-auto rounded-sm border-2 border-black bg-white p-4;
   }
 
   .markdown-body code {
-    @apply rounded-sm border border-black bg-white px-1 font-mono text-sm;
+    @apply rounded-sm border border-black bg-white p-1 font-mono text-sm;
   }
 
   .markdown-body blockquote {
@@ -66,5 +70,65 @@
 
   .markdown-body ol {
     @apply list-decimal pl-5;
+  }
+
+  .markdown-body ul:has(input[type="checkbox"]) {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .markdown-body li:has(input[type="checkbox"]) {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+  }
+
+  .markdown-body input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    display: inline-grid;
+    place-content: center;
+    width: 1.125rem;
+    height: 1.125rem;
+    min-width: 1.125rem;
+    min-height: 1.125rem;
+    margin: 0.35rem 0 0 0;
+    border: 2px solid #000;
+    border-radius: 0.125rem;
+    background-color: #fff;
+    cursor: pointer;
+    vertical-align: middle;
+    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+    opacity: 1 !important;
+  }
+
+  .markdown-body input[type="checkbox"]:hover {
+    background-color: #f0f0eb;
+    transform: translateY(-0.5px);
+  }
+
+  .markdown-body input[type="checkbox"]:focus-visible {
+    outline: 2px solid #000;
+    outline-offset: 2px;
+  }
+
+  .markdown-body input[type="checkbox"]:checked {
+    background-color: #000;
+    border-color: #000;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='3.5 8.5 6.5 11.5 12.5 4.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 85% 85%;
+  }
+
+  .markdown-body input[type="checkbox"]:checked:hover {
+    background-color: #222;
+  }
+
+  .markdown-body img {
+    border-radius: 0.25rem;
   }
 }
